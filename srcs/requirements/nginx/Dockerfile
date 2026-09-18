@@ -7,7 +7,10 @@ RUN apt update &&\
 	rm -fr /var/lib/apt/lists/*
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./tools/nginx_cert.sh /usr/local/bin/nginx_cert.sh
+
+RUN chmod +x /usr/local/bin/nginx_cert.sh
 
 EXPOSE 443
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "/usr/local/bin/nginx_cert.sh"]
