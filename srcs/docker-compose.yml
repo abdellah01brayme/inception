@@ -43,10 +43,20 @@ services:
       - inception
     depends_on: 
       - wordpress
+      - redis
     volumes: 
       - wordpress_data:/var/www/html
     ports: 
       - "443:443"
+
+  redis:
+    build: ./requirements/bonus/redis
+    image: redis
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - inception
+
 
 networks:
   inception:

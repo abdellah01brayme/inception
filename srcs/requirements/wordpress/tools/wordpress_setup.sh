@@ -31,4 +31,14 @@ else
     echo "wp-config.php already exists, skipping install."
 fi
 
+
+# redis configuration
+wp  config set WP_REDIS_HOST redis --allow-root --path="${WORDPRESS_PATH}" 
+wp  config set WP_REDIS_PORT 6379 --allow-root --path="${WORDPRESS_PATH}" 
+if ! wp plugin is-installed redis-cache --allow-root --path="${WORDPRESS_PATH}" ; then
+    wp plugin install redis-cache --allow-root --path="${WORDPRESS_PATH}"
+fi
+
+wp plugin activate redis-cache --allow-root --path="${WORDPRESS_PATH}"
+
 exec php-fpm8.2 -F

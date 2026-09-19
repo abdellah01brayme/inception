@@ -4,7 +4,7 @@ COMPOSE_FILE = ./srcs/docker-compose.yml
 MARIADB_DIR = /home/${USER}/data/mariadb
 WORDPRESS_DIR = /home/${USER}/data/wordpress
 
-all: up
+all: build up
 
 $(MARIADB_DIR):
 	mkdir -p $(MARIADB_DIR)
@@ -16,7 +16,7 @@ $(WORDPRESS_DIR):
 build: $(MARIADB_DIR) $(WORDPRESS_DIR)
 	docker compose -f $(COMPOSE_FILE) build
 
-up: build
+up: 
 	docker compose -f $(COMPOSE_FILE) up -d
 
 down: 
