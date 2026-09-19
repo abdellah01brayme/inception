@@ -1,0 +1,12 @@
+FROM debian:bookworm
+
+RUN apt update && \
+	apt install -y \
+	npm && \
+	rm -rf /var/lib/apt/lists/*
+
+COPY components/ components/
+
+EXPOSE 5500
+
+ENTRYPOINT ["npx", "http-server", "./components", "-a", "0.0.0.0", "-p", "5500"]

@@ -25,6 +25,7 @@ services:
       - inception
     depends_on: 
       - mariadb
+      - redis
     volumes: 
       - wordpress_data:/var/www/html
     secrets:
@@ -43,7 +44,6 @@ services:
       - inception
     depends_on: 
       - wordpress
-      - redis
     volumes: 
       - wordpress_data:/var/www/html
     ports: 
@@ -72,6 +72,42 @@ services:
       - inception
     secrets:
       - ftp_password
+
+  adminer:
+    build: ./requirements/bonus/adminer
+    image: adminer
+    container_name: adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+
+  static_site:
+    build: ./requirements/bonus/static_site
+    image: static_site
+    container_name: static_site
+    restart: unless-stopped
+    ports:
+      - "5500:5500"
+    networks:
+      - inception
+
+  cadvisor:
+    build: ./requirements/bonus/cadvisor
+    image: cadvisor
+    container_name: cadvisor
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+  
 networks:
   inception:
     driver: bridge

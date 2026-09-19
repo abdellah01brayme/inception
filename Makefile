@@ -20,13 +20,13 @@ up:
 	docker compose -f $(COMPOSE_FILE) up -d
 
 down: 
-	docker compose -f $(COMPOSE_FILE) down
+	docker compose -f $(COMPOSE_FILE) down -v
 
 clean:
-	docker compose -f $(COMPOSE_FILE) -f $(COMPOSE_FILE) down --rmi all
+	docker compose -f $(COMPOSE_FILE) down  -v --rmi all
 del:
 	sudo rm -fr /home/aid-bray/data
 
 re: clean del all
 
-.PHONY: all build up down clean re
+.PHONY: all build up down clean re	
