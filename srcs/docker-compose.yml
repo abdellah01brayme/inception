@@ -56,8 +56,22 @@ services:
     restart: unless-stopped
     networks:
       - inception
-
-
+  ftp:
+    build: ./requirements/bonus/ftp
+    image: ftp
+    container_name: ftp
+    restart: unless-stopped
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+    secrets:
+      - ftp_password
 networks:
   inception:
     driver: bridge
@@ -85,4 +99,5 @@ secrets:
     file: "../secrets/wordpress_admin_password.txt"
   wordpress_user_password:
     file: "../secrets/wordpress_user_password.txt"
-  
+  ftp_password:
+    file: "../secrets/ftp_password.txt"

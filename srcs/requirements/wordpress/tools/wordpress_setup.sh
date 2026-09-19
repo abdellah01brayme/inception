@@ -34,11 +34,15 @@ fi
 
 # redis configuration
 wp  config set WP_REDIS_HOST redis --allow-root --path="${WORDPRESS_PATH}" 
-wp  config set WP_REDIS_PORT 6379 --allow-root --path="${WORDPRESS_PATH}" 
+wp  config set WP_REDIS_PORT "${REDIS_PORT}" --allow-root --path="${WORDPRESS_PATH}" 
+# wp  config set WP_CACHE true --path="${WORDPRESS_PATH}" --allow-root --type=constant --raw
+
 if ! wp plugin is-installed redis-cache --allow-root --path="${WORDPRESS_PATH}" ; then
     wp plugin install redis-cache --allow-root --path="${WORDPRESS_PATH}"
 fi
 
 wp plugin activate redis-cache --allow-root --path="${WORDPRESS_PATH}"
+
+# chown -R www-data:www-data "${WORDPRESS_PATH}"
 
 exec php-fpm8.2 -F
